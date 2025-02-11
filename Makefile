@@ -5,7 +5,7 @@ i:
 	pip install -r requirements.txt
 
 # FastAPI
-run:
+dev:
 	fastapi dev main.py
 
 # Ruff commands
