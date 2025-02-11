@@ -17,3 +17,8 @@ async def get_book_by_name(book_title: str) -> Book | str:
         (book for book in BOOKS if book["title"].lower() == book_title.lower()),
         "Not found",
     )
+
+
+@app.get("/books/")
+async def get_books_by_category_query(category: str) -> list[Book]:
+    return [book for book in BOOKS if book["category"].lower() == category.lower()]
