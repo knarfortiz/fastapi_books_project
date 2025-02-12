@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 
 from data_base import BOOKS
 from models import Book
@@ -32,3 +32,9 @@ async def read_author_category_by_author(book_author: str, category: str) -> lis
         if book["author"].lower() == book_author.lower()
         and book["category"].lower() == category.lower()
     ]
+
+
+@app.post("/books", status_code=status.HTTP_201_CREATED)
+async def create_book(book: Book) -> Book:
+    BOOKS.append(book)
+    return book
