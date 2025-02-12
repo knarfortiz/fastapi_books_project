@@ -22,3 +22,13 @@ async def get_book_by_name(book_title: str) -> Book | str:
 @app.get("/books/")
 async def get_books_by_category_query(category: str) -> list[Book]:
     return [book for book in BOOKS if book["category"].lower() == category.lower()]
+
+
+@app.get("/books/{book_author}/")
+async def read_author_category_by_author(book_author: str, category: str) -> list[Book]:
+    return [
+        book
+        for book in BOOKS
+        if book["author"].lower() == book_author.lower()
+        and book["category"].lower() == category.lower()
+    ]
