@@ -38,3 +38,9 @@ async def read_author_category_by_author(book_author: str, category: str) -> lis
 async def create_book(book: Book) -> Book:
     BOOKS.append(book)
     return book
+
+
+@app.put("/books/{id}")
+async def update_book(id: int, book: Book) -> Book:
+    BOOKS[id] = book
+    return book
