@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
 
 from data_base import BOOKS
-from models import Book
+from models import Book, BookRequest
 
 app = FastAPI()
 
@@ -35,14 +35,16 @@ async def read_author_category_by_author(book_author: str, category: str) -> lis
 
 
 @app.post("/books", status_code=status.HTTP_201_CREATED)
-async def create_book(book: Book) -> Book:
-    BOOKS.append(book)
+async def create_book(book: BookRequest) -> Book:
+    new_book = Book(**book.model_dump())
+    BOOKS.append(new_book)
     return book
 
 
 @app.put("/books/{id}")
-async def update_book(id: int, book: Book) -> Book:
-    BOOKS[id] = book
+async def update_book(id: int, book: BookRequest) -> Book:
+    updated_book = Book(**book.model_dump())
+    BOOKS[id] = updated_book
     return book
 
 
