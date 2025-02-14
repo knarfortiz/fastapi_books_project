@@ -44,3 +44,10 @@ async def create_book(book: Book) -> Book:
 async def update_book(id: int, book: Book) -> Book:
     BOOKS[id] = book
     return book
+
+
+@app.delete("/books/{id}")
+async def delete_book(id: int) -> Book:
+    book = BOOKS[id]
+    del BOOKS[id]
+    return book
