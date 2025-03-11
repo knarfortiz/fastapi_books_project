@@ -1,7 +1,7 @@
 from fastapi import Depends, FastAPI, HTTPException, status
 
 from data_base import BOOKS
-from depends import validate_book_id
+from dependencies import validate_book_id
 from models import Book, BookRequest
 from utils import set_book_id
 
