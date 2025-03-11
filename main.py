@@ -8,12 +8,12 @@ from utils import set_book_id
 app = FastAPI()
 
 
-@app.get("/books")
+@app.get("/books", status_code=status.HTTP_200_OK)
 async def get_books() -> list[Book]:
     return BOOKS
 
 
-@app.get("/books/{book_title}")
+@app.get("/books/{book_title}", status_code=status.HTTP_200_OK)
 async def get_book_by_name(book_title: str) -> Book | str:
     return next(
         (book for book in BOOKS if book["title"].lower() == book_title.lower()),
@@ -21,12 +21,12 @@ async def get_book_by_name(book_title: str) -> Book | str:
     )
 
 
-@app.get("/books/")
+@app.get("/books/", status_code=status.HTTP_200_OK)
 async def get_books_by_category_query(category: str) -> list[Book]:
     return [book for book in BOOKS if book["category"].lower() == category.lower()]
 
 
-@app.get("/books/{book_author}/")
+@app.get("/books/{book_author}/", status_code=status.HTTP_200_OK)
 async def read_author_category_by_author(book_author: str, category: str) -> list[Book]:
     return [
         book
@@ -43,7 +43,7 @@ async def create_book(book: BookRequest) -> Book:
     return new_book
 
 
-@app.put("/books/{id}")
+@app.put("/books/{id}", status_code=status.HTTP_200_OK)
 async def update_book(book: BookRequest, id: int = Depends(validate_book_id)) -> Book | None:
     try:
         updated_book = Book(**book.model_dump())
@@ -53,7 +53,7 @@ async def update_book(book: BookRequest, id: int = Depends(validate_book_id)) ->
         raise HTTPException(status_code=404, detail="Book not found")
 
 
-@app.delete("/books/{id}")
+@app.delete("/books/{id}", status_code=status.HTTP_200_OK)
 async def delete_book(id: int = Depends(validate_book_id)) -> Book | None:
     try:
         book = BOOKS[id]
