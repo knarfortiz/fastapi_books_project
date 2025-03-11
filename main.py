@@ -1,7 +1,7 @@
-from fastapi import Depends, FastAPI, status
+from fastapi import Depends, FastAPI, HTTPException, status
 
 from data_base import BOOKS
-from Depends import validate_book_id
+from depends import validate_book_id
 from models import Book, BookRequest
 from utils import set_book_id
 
@@ -44,20 +44,20 @@ async def create_book(book: BookRequest) -> Book:
 
 
 @app.put("/books/{id}")
-async def update_book(book: BookRequest, id: int = Depends(validate_book_id)) -> Book | str:
+async def update_book(book: BookRequest, id: int = Depends(validate_book_id)) -> Book | None:
     try:
         updated_book = Book(**book.model_dump())
         BOOKS[id] = updated_book
         return updated_book
     except IndexError:
-        return "Book not found"
+        raise HTTPException(status_code=404, detail="Book not found")
 
 
 @app.delete("/books/{id}")
-async def delete_book(id: int = Depends(validate_book_id)) -> Book | str:
+async def delete_book(id: int = Depends(validate_book_id)) -> Book | None:
     try:
         book = BOOKS[id]
         del BOOKS[id]
         return book
     except IndexError:
-        return "Book not found"
+        raise HTTPException(status_code=404, detail="Book not found")
